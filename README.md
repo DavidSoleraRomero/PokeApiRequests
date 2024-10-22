@@ -12,7 +12,7 @@ Este es un proyecto en Kotlin que utiliza Retrofit, Gson y Hilt para realizar co
 ## Funcionalidades
 
 - Consultar información sobre diferentes Pokémon.
-- Mostrar detalles como nombre, tipo y habilidades de cada Pokémon.
+- Mostrar detalles como id, nombre e imagen de cada Pokémon.
 
 ## Licencia
 
