@@ -1,6 +1,9 @@
 package com.example.pokedex.data
 
 import com.example.pokedex.data.remote.IRemotePokemonRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -9,16 +12,22 @@ class DefaultPokemonRepository @Inject constructor(
     private val remotePokemonRepository: IRemotePokemonRepository
 ): IPokemonRepository {
 
-    override suspend fun readPaginated(): List<Pokemon> {
+    private val _pokemonListEmitter = MutableStateFlow<List<Pokemon>>(listOf())
+    override val pokemonListEmitter: StateFlow<List<Pokemon>>
+        get() = _pokemonListEmitter.asStateFlow()
+
+    override suspend fun readPaginated() {
         val response = remotePokemonRepository.readPaginated()
-        val pokemonList = mutableListOf<Pokemon>()
+        val pokemonList = _pokemonListEmitter.value.toMutableList()
         if (response.isSuccessful) {
             val pokemonRawList = response.body()!!.results
             pokemonRawList.forEach {
-                pRaw -> pokemonList.add(readOne(idFromUrl(pRaw.url)!!))
+                pRaw ->
+                pokemonList.add(readOne(idFromUrl(pRaw.url)!!))
+                _pokemonListEmitter.emit(pokemonList.toList())
             }
         }
-        return pokemonList
+        else _pokemonListEmitter.value = pokemonList
     }
 
     override suspend fun readOne(id: Int): Pokemon {
