@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Pokedex</string>
+    <string name="button_text">Call API</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pokemon_image_alt_text">Pokemon image</string>
+    <string name="app_title_text">Pokemon List</string>
+</resources>
