@@ -1,6 +1,7 @@
 package com.example.pokedex.data
 
 import com.example.pokedex.data.remote.IRemotePokemonRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,12 +23,13 @@ class DefaultPokemonRepository @Inject constructor(
         if (response.isSuccessful) {
             val pokemonRawList = response.body()!!.results
             pokemonRawList.forEach {
-                pRaw ->
-                pokemonList.add(readOne(idFromUrl(pRaw.url)!!))
+                    pRaw ->
+                pokemonList.add(readOneByUrl(pRaw.url))
                 _pokemonListEmitter.emit(pokemonList.toList())
+                delay(100)
             }
         }
-        else _pokemonListEmitter.value = pokemonList
+        else _pokemonListEmitter.emit(pokemonList.toList())
     }
 
     override suspend fun readOne(id: Int): Pokemon {
@@ -36,9 +38,10 @@ class DefaultPokemonRepository @Inject constructor(
         else Pokemon(0, "", Sprites(""))
     }
 
-    private fun idFromUrl(url: String): Int? {
-        val newUrl = url.trimEnd('/')
-        return newUrl.substringAfterLast('/').toIntOrNull()
+    override suspend fun readOneByUrl(url: String): Pokemon {
+        val response = remotePokemonRepository.readOneByUrl(url)
+        return if (response.isSuccessful) response.body()!!
+        else Pokemon(0, "", Sprites(""))
     }
 
 }

@@ -14,4 +14,6 @@ class RemotePokemonRepository @Inject constructor(
 
     override suspend fun readOne(id: Int): Response<Pokemon> = pokeApiService.readOne(id)
 
+    override suspend fun readOneByUrl(url: String): Response<Pokemon> = pokeApiService.readOneByUrl(url)
+
 }

@@ -1,6 +1,5 @@
 package com.example.pokedex.data
 
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 interface IPokemonRepository {
@@ -9,5 +8,6 @@ interface IPokemonRepository {
 
     suspend fun readPaginated()
     suspend fun readOne(id: Int): Pokemon
+    suspend fun readOneByUrl(url: String): Pokemon
 
 }
