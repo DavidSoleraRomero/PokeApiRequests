@@ -22,8 +22,8 @@ class PokemonListAdapter: ListAdapter<Pokemon, PokemonListAdapter.PokemonListVie
             binding.pokemonId.text = "ID ${pokemon.id}"
             binding.pokemonName.text = pokemon.name.replaceFirstChar { char -> char.uppercase() }
             binding.pokemonImage.load(pokemon.sprites.front_default) {
-                placeholder(R.drawable.loading)
-                error(R.drawable.loading)
+                placeholder(R.drawable.ic_loading)
+                error(R.drawable.ic_loading)
             }
         }
 
